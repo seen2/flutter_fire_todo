@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_fire_todo/screens/HomeScreens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +16,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Material(
-            child: Center(
-      child: Container(
-        child: Text("Hello"),
-      ),
-    )));
+      debugShowCheckedModeBanner: false,
+      home: Material(child: HomeScreen()),
+    );
   }
 }
