@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fire_todo/screens/AddTaskScreen.dart';
 import 'package:flutter_fire_todo/utils/appRoutes.dart';
@@ -38,66 +39,17 @@ class _TaskScreenState extends State<TaskScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                            radius: 25,
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              Icons.menu,
-                              size: 40,
-                              color: Colors.blueGrey[700],
-                            )),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          "Let's Do it",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 25),
-                        ),
-                      ],
+                    Container(
+                      height: MediaQuery.of(context).size.height / 10,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TaskScreenHeader(),
+                          UserAvatar(),
+                        ],
+                      ),
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 7,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "TOTAL: 3",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                                AppRoutes.home,
-                                (Route<dynamic> route) => false);
-                          },
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.logout,
-                                size: 25,
-                                color: Colors.red[700],
-                              ),
-                              Text(
-                                "Logout",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                    TaskScreenMenu(),
                   ],
                 ),
               ),
@@ -131,6 +83,112 @@ class _TaskScreenState extends State<TaskScreen> {
           },
         ),
       ),
+    );
+  }
+}
+
+class UserAvatar extends StatelessWidget {
+  const UserAvatar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.only(top: 9),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Column(
+              children: [
+                CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.blueGrey[700],
+                    )),
+                Text(
+                  FirebaseAuth.instance.currentUser!.displayName!,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
+          ],
+        ));
+  }
+}
+
+class TaskScreenMenu extends StatelessWidget {
+  const TaskScreenMenu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "TOTAL: 3",
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+        ),
+        TextButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            await Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.home, (Route<dynamic> route) => false);
+          },
+          child: Column(
+            children: [
+              Icon(
+                Icons.logout,
+                color: Colors.red[700],
+              ),
+              Text(
+                "Logout",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class TaskScreenHeader extends StatelessWidget {
+  const TaskScreenHeader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+            radius: 25,
+            backgroundColor: Colors.white,
+            child: Icon(
+              Icons.menu,
+              size: 40,
+              color: Colors.blueGrey[700],
+            )),
+        SizedBox(
+          width: 20,
+        ),
+        Text(
+          "Let's Do it",
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w700, fontSize: 25),
+        ),
+      ],
     );
   }
 }
