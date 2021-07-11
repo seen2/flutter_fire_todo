@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fire_todo/utils/appRoutes.dart';
 
@@ -31,8 +30,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Processing Data')));
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email!, password: password!);
         FirebaseAuth auth = FirebaseAuth.instance;
         await auth.currentUser!.updateDisplayName(name);
         await FirebaseAuth.instance

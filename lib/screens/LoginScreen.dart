@@ -20,8 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
       loading = true;
     });
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
       await Navigator.pushNamed(context, AppRoutes.tasks);
       return "User Signin Success";
     } on FirebaseAuthException catch (e) {
